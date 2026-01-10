@@ -4,11 +4,13 @@ defmodule HealthWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
+  # Session lasts for 1 year (365 days in seconds)
   @session_options [
     store: :cookie,
     key: "_health_key",
     signing_salt: "cjCBjng2",
-    same_site: "Lax"
+    same_site: "Lax",
+    max_age: 365 * 24 * 60 * 60
   ]
 
   socket "/live", Phoenix.LiveView.Socket,

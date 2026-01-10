@@ -17,7 +17,11 @@ defmodule HealthWeb.Router do
   scope "/", HealthWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", HomeLive, :index
+    live "/space", SpaceLive, :index
+
+    post "/space/login", SpaceAuthController, :login
+    get "/space/logout", SpaceAuthController, :logout
   end
 
   # Other scopes may use custom stacks.

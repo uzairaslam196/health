@@ -103,3 +103,162 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
+
+/* Cosmic Theme Styles */
+.cosmic-bg {
+  background: linear-gradient(135deg, #0c0118 0%, #1a0533 25%, #0d1b2a 50%, #1a0533 75%, #0c0118 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(2px 2px at 160px 120px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 230px 80px, #fff, transparent),
+    radial-gradient(2px 2px at 300px 150px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 370px 50px, #fff, transparent),
+    radial-gradient(2px 2px at 450px 200px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 520px 100px, #fff, transparent),
+    radial-gradient(2px 2px at 600px 180px, rgba(255, 255, 255, 0.6), transparent);
+  background-size: 650px 250px;
+  animation: stars-move 100s linear infinite;
+}
+
+@keyframes stars-move {
+  from { transform: translateY(0); }
+  to { transform: translateY(-250px); }
+}
+
+.twinkling {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image:
+    radial-gradient(3px 3px at 100px 150px, rgba(167, 139, 250, 0.8), transparent),
+    radial-gradient(2px 2px at 250px 80px, rgba(196, 181, 253, 0.6), transparent),
+    radial-gradient(3px 3px at 400px 220px, rgba(139, 92, 246, 0.7), transparent),
+    radial-gradient(2px 2px at 550px 120px, rgba(167, 139, 250, 0.5), transparent);
+  background-size: 700px 300px;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.8; }
+}
+
+.cosmic-glow {
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.8),
+               0 0 20px rgba(139, 92, 246, 0.6),
+               0 0 30px rgba(124, 58, 237, 0.4);
+  animation: glow-pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+  0% { text-shadow: 0 0 10px rgba(167, 139, 250, 0.8), 0 0 20px rgba(139, 92, 246, 0.6); }
+  100% { text-shadow: 0 0 20px rgba(167, 139, 250, 1), 0 0 40px rgba(139, 92, 246, 0.8), 0 0 60px rgba(124, 58, 237, 0.6); }
+}
+
+.cosmic-title {
+  background: linear-gradient(135deg, #f8fafc 0%, #a78bfa 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cosmic-card {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(12px);
+}
+
+.cosmic-button {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+  transition: all 0.3s ease;
+}
+
+.cosmic-button:hover {
+  box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
+  transform: translateY(-2px);
+}
+
+.cosmic-button:disabled {
+  background: rgba(139, 92, 246, 0.3);
+  box-shadow: none;
+  transform: none;
+}
+
+.cosmic-nav {
+  background: rgba(15, 5, 30, 0.8);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  color: #c4b5fd;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(139, 92, 246, 0.2);
+  color: white;
+}
+
+.nav-link.active {
+  background: rgba(139, 92, 246, 0.3);
+  color: white;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Scrollbar styling for cosmic theme */
+.cosmic-card ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cosmic-card ::-webkit-scrollbar-track {
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 4px;
+}
+
+.cosmic-card ::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+}
+
+.cosmic-card ::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
