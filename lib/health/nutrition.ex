@@ -123,6 +123,7 @@ defmodule Health.Nutrition do
         create_rhythm(%{
           name: entry.name,
           meal_type: entry.type,
+          notes: Map.get(entry, :notes, ""),
           scheduled_date: date,
           diet_plan_id: orbit.id
         })

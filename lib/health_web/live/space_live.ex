@@ -122,25 +122,27 @@ defmodule HealthWeb.SpaceLive do
 
   defp authenticated_view(assigns) do
     ~H"""
-    <div class="relative z-10 min-h-screen">
+    <div class="relative z-10 min-h-screen pb-20 sm:pb-0">
+      <!-- Top header - simplified for mobile -->
       <nav class="cosmic-nav backdrop-blur-lg border-b border-purple-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between h-16">
-            <div class="flex items-center gap-4">
-              <span class="cosmic-glow text-2xl">*</span>
-              <span class="text-white font-semibold">Personal Space</span>
-              <span class={"px-3 py-1 rounded-full text-xs font-medium #{role_badge_class(@role)}"}>
+          <div class="flex items-center justify-between h-14 sm:h-16">
+            <div class="flex items-center gap-2 sm:gap-4">
+              <span class="cosmic-glow text-xl sm:text-2xl">*</span>
+              <span class="text-white font-semibold text-sm sm:text-base">Personal Space</span>
+              <span class={"px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium #{role_badge_class(@role)}"}>
                 {role_display(@role)}
               </span>
             </div>
 
-            <div class="flex items-center gap-4">
+            <!-- Desktop navigation -->
+            <div class="hidden sm:flex items-center gap-4">
               <.link
                 patch={~p"/space"}
                 class={"nav-link #{if @active_tab == :dashboard, do: "active"}"}
               >
                 <.icon name="hero-home" class="w-5 h-5" />
-                <span class="hidden sm:inline">Dashboard</span>
+                <span>Dashboard</span>
               </.link>
 
               <.link
@@ -148,7 +150,7 @@ defmodule HealthWeb.SpaceLive do
                 class={"nav-link #{if @active_tab == :meals, do: "active"}"}
               >
                 <.icon name="hero-calendar-days" class="w-5 h-5" />
-                <span class="hidden sm:inline">Routine</span>
+                <span>Routine</span>
               </.link>
 
               <.link
@@ -156,7 +158,7 @@ defmodule HealthWeb.SpaceLive do
                 class={"nav-link #{if @active_tab == :plans, do: "active"}"}
               >
                 <.icon name="hero-sparkles" class="w-5 h-5" />
-                <span class="hidden sm:inline">Orbits</span>
+                <span>Orbits</span>
               </.link>
 
               <.link
@@ -164,7 +166,7 @@ defmodule HealthWeb.SpaceLive do
                 class={"nav-link #{if @active_tab == :messages, do: "active"}"}
               >
                 <.icon name="hero-chat-bubble-left-right" class="w-5 h-5" />
-                <span class="hidden sm:inline">Messages</span>
+                <span>Messages</span>
               </.link>
 
               <.link
@@ -174,11 +176,19 @@ defmodule HealthWeb.SpaceLive do
                 <.icon name="hero-arrow-right-on-rectangle" class="w-5 h-5" />
               </.link>
             </div>
+
+            <!-- Mobile logout button -->
+            <.link
+              href={~p"/space/logout"}
+              class="sm:hidden text-purple-300 hover:text-white transition-colors"
+            >
+              <.icon name="hero-arrow-right-on-rectangle" class="w-5 h-5" />
+            </.link>
           </div>
         </div>
       </nav>
 
-      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         <%= case @active_tab do %>
           <% :dashboard -> %>
             <.live_component module={HealthWeb.DashboardComponent} id="dashboard" role={@role} />
@@ -190,6 +200,43 @@ defmodule HealthWeb.SpaceLive do
             <.live_component module={HealthWeb.MessagesComponent} id="messages" role={@role} />
         <% end %>
       </main>
+
+      <!-- Mobile bottom navigation -->
+      <nav class="sm:hidden fixed bottom-0 left-0 right-0 cosmic-nav backdrop-blur-lg border-t border-purple-500/20 z-50">
+        <div class="flex items-center justify-around h-16">
+          <.link
+            patch={~p"/space"}
+            class={"flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors #{if @active_tab == :dashboard, do: "text-purple-300 bg-purple-500/20", else: "text-purple-400"}"}
+          >
+            <.icon name="hero-home" class="w-6 h-6" />
+            <span class="text-xs">Home</span>
+          </.link>
+
+          <.link
+            patch={~p"/space?tab=meals"}
+            class={"flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors #{if @active_tab == :meals, do: "text-purple-300 bg-purple-500/20", else: "text-purple-400"}"}
+          >
+            <.icon name="hero-calendar-days" class="w-6 h-6" />
+            <span class="text-xs">Routine</span>
+          </.link>
+
+          <.link
+            patch={~p"/space?tab=plans"}
+            class={"flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors #{if @active_tab == :plans, do: "text-purple-300 bg-purple-500/20", else: "text-purple-400"}"}
+          >
+            <.icon name="hero-sparkles" class="w-6 h-6" />
+            <span class="text-xs">Orbits</span>
+          </.link>
+
+          <.link
+            patch={~p"/space?tab=messages"}
+            class={"flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors #{if @active_tab == :messages, do: "text-purple-300 bg-purple-500/20", else: "text-purple-400"}"}
+          >
+            <.icon name="hero-chat-bubble-left-right" class="w-6 h-6" />
+            <span class="text-xs">Chat</span>
+          </.link>
+        </div>
+      </nav>
     </div>
     """
   end

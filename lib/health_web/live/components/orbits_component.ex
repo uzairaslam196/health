@@ -16,14 +16,15 @@ defmodule HealthWeb.OrbitsComponent do
      |> assign(editing_orbit: nil)
      |> assign(adding_rhythm: false)
      |> assign(selected_date: Date.utc_today())
-     |> assign(rhythm_entries: default_rhythm_entries())}
+     |> assign(rhythm_entries: default_rhythm_entries())
+     |> assign(expanded_rhythm_ids: MapSet.new())}
   end
 
   defp default_rhythm_entries do
-    # Default entries with name and type
+    # Default entries with name, type, and notes
     [
-      %{id: 1, name: "Morning practice", type: "morning"},
-      %{id: 2, name: "Evening practice", type: "evening"}
+      %{id: 1, name: "Morning practice", type: "morning", notes: ""},
+      %{id: 2, name: "Evening practice", type: "evening", notes: ""}
     ]
   end
 
@@ -106,7 +107,7 @@ defmodule HealthWeb.OrbitsComponent do
   def handle_event("add_rhythm_entry", _params, socket) do
     entries = socket.assigns.rhythm_entries
     new_id = (Enum.map(entries, & &1.id) |> Enum.max(fn -> 0 end)) + 1
-    new_entry = %{id: new_id, name: "", type: "morning"}
+    new_entry = %{id: new_id, name: "", type: "morning", notes: ""}
 
     {:noreply, assign(socket, rhythm_entries: entries ++ [new_entry])}
   end
@@ -155,6 +156,28 @@ defmodule HealthWeb.OrbitsComponent do
     if id do
       entries = Enum.map(socket.assigns.rhythm_entries, fn entry ->
         if entry.id == id, do: %{entry | type: type}, else: entry
+      end)
+
+      {:noreply, assign(socket, rhythm_entries: entries)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_event("update_rhythm_notes", params, socket) do
+    # Extract the id and notes from the rhythm_notes_* key in params
+    {id, notes} =
+      params
+      |> Enum.find(fn {key, _val} -> String.starts_with?(key, "rhythm_notes_") end)
+      |> case do
+        {"rhythm_notes_" <> id_string, notes} -> {String.to_integer(id_string), notes}
+        _ -> {nil, nil}
+      end
+
+    if id do
+      entries = Enum.map(socket.assigns.rhythm_entries, fn entry ->
+        if entry.id == id, do: %{entry | notes: notes}, else: entry
       end)
 
       {:noreply, assign(socket, rhythm_entries: entries)}
@@ -279,6 +302,21 @@ defmodule HealthWeb.OrbitsComponent do
 
     orbit = Nutrition.get_orbit_with_rhythms!(socket.assigns.selected_orbit.id)
     {:noreply, assign(socket, selected_orbit: orbit)}
+  end
+
+  @impl true
+  def handle_event("toggle_notes", %{"id" => id}, socket) do
+    id = String.to_integer(id)
+    expanded = socket.assigns.expanded_rhythm_ids
+
+    new_expanded =
+      if MapSet.member?(expanded, id) do
+        MapSet.delete(expanded, id)
+      else
+        MapSet.put(expanded, id)
+      end
+
+    {:noreply, assign(socket, expanded_rhythm_ids: new_expanded)}
   end
 
   defp save_orbit(socket, nil, params) do
@@ -434,7 +472,7 @@ defmodule HealthWeb.OrbitsComponent do
             <.input
               field={@orbit_form[:description]}
               type="textarea"
-              rows="2"
+              rows="4"
               placeholder="Brief description of this orbit..."
               class="w-full px-4 py-3 bg-purple-900/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400"
             />
@@ -479,38 +517,50 @@ defmodule HealthWeb.OrbitsComponent do
             <div class="space-y-3">
               <div
                 :for={entry <- @rhythm_entries}
-                class="flex items-center gap-3 p-3 rounded-lg bg-purple-900/20 border border-purple-500/20"
+                class="p-3 rounded-lg bg-purple-900/20 border border-purple-500/20"
               >
-                <input
-                  type="text"
-                  value={entry.name}
-                  placeholder="Rhythm name..."
-                  phx-change="update_rhythm_name"
+                <div class="flex items-center gap-3 mb-2">
+                  <input
+                    type="text"
+                    value={entry.name}
+                    placeholder="Rhythm name..."
+                    phx-change="update_rhythm_name"
+                    phx-debounce="100"
+                    phx-target={@myself}
+                    name={"rhythm_name_#{entry.id}"}
+                    class="flex-1 px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400"
+                  />
+                  <select
+                    phx-change="update_rhythm_type"
+                    phx-target={@myself}
+                    phx-value-id={entry.id}
+                    name={"rhythm_type_#{entry.id}"}
+                    class="px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-400"
+                  >
+                    <option :for={type <- Rhythm.rhythm_types()} value={type} selected={entry.type == type}>
+                      {Rhythm.rhythm_display(type)}
+                    </option>
+                  </select>
+                  <button
+                    type="button"
+                    phx-click="remove_rhythm_entry"
+                    phx-target={@myself}
+                    phx-value-id={entry.id}
+                    class="p-1.5 text-red-400 hover:bg-red-500/20 rounded transition-colors"
+                  >
+                    <.icon name="hero-trash" class="w-4 h-4" />
+                  </button>
+                </div>
+                <textarea
+                  value={entry.notes}
+                  placeholder="Notes/instructions for this rhythm..."
+                  phx-change="update_rhythm_notes"
                   phx-debounce="100"
                   phx-target={@myself}
-                  name={"rhythm_name_#{entry.id}"}
-                  class="flex-1 px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400"
-                />
-                <select
-                  phx-change="update_rhythm_type"
-                  phx-target={@myself}
-                  phx-value-id={entry.id}
-                  name={"rhythm_type_#{entry.id}"}
-                  class="px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-400"
-                >
-                  <option :for={type <- Rhythm.rhythm_types()} value={type} selected={entry.type == type}>
-                    {Rhythm.rhythm_display(type)}
-                  </option>
-                </select>
-                <button
-                  type="button"
-                  phx-click="remove_rhythm_entry"
-                  phx-target={@myself}
-                  phx-value-id={entry.id}
-                  class="p-1.5 text-red-400 hover:bg-red-500/20 rounded transition-colors"
-                >
-                  <.icon name="hero-trash" class="w-4 h-4" />
-                </button>
+                  name={"rhythm_notes_#{entry.id}"}
+                  rows="2"
+                  class="w-full px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400"
+                >{entry.notes}</textarea>
               </div>
             </div>
 
@@ -609,78 +659,8 @@ defmodule HealthWeb.OrbitsComponent do
       </div>
 
       <div class="cosmic-card p-6 rounded-2xl">
-        <div class="flex items-center justify-between mb-6">
+        <div class="mb-6">
           <h3 class="text-lg font-semibold text-white">Rhythms</h3>
-
-          <div class="flex items-center gap-3">
-            <input
-              type="date"
-              value={Date.to_iso8601(@selected_date)}
-              phx-change="select_date"
-              phx-target={@myself}
-              name="date"
-              class="px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-400"
-            />
-
-            <button
-              :if={!@adding_rhythm}
-              phx-click="show_add_rhythm"
-              phx-target={@myself}
-              class="cosmic-button px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
-            >
-              <.icon name="hero-plus" class="w-4 h-4" />
-              Add Rhythm
-            </button>
-          </div>
-        </div>
-
-        <div :if={@adding_rhythm} class="mb-6 p-4 rounded-xl bg-purple-900/20 border border-purple-500/20">
-          <h4 class="text-white font-medium mb-4">
-            Add rhythm for {Calendar.strftime(@selected_date, "%B %d, %Y")}
-          </h4>
-
-          <.form
-            for={@rhythm_form}
-            phx-target={@myself}
-            phx-change="validate_rhythm"
-            phx-submit="save_rhythm"
-            class="space-y-4"
-          >
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-purple-200 text-sm mb-2">Name *</label>
-                <.input
-                  field={@rhythm_form[:name]}
-                  type="text"
-                  placeholder="e.g., Morning meditation"
-                  class="w-full px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400"
-                />
-              </div>
-              <div>
-                <label class="block text-purple-200 text-sm mb-2">Time *</label>
-                <.input
-                  field={@rhythm_form[:meal_type]}
-                  type="select"
-                  options={rhythm_type_options()}
-                  class="w-full px-3 py-2 text-sm bg-purple-900/30 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-400"
-                />
-              </div>
-            </div>
-
-            <div class="flex gap-2">
-              <button type="submit" class="px-4 py-2 text-sm rounded-lg bg-purple-500 text-white hover:bg-purple-600 transition-colors">
-                Add Rhythm
-              </button>
-              <button
-                type="button"
-                phx-click="cancel_add_rhythm"
-                phx-target={@myself}
-                class="px-4 py-2 text-sm rounded-lg text-purple-300 hover:text-white border border-purple-500/30 hover:border-purple-400 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </.form>
         </div>
 
         <div :if={@selected_orbit.rhythms == []} class="text-center py-8 text-purple-300">
@@ -696,64 +676,44 @@ defmodule HealthWeb.OrbitsComponent do
                 {Calendar.strftime(date, "%A, %B %d, %Y")}
               </h4>
               <div class="space-y-2">
-                <div
-                  :for={rhythm <- Enum.sort_by(rhythms, &Rhythm.rhythm_order(&1.meal_type))}
-                  class={"flex items-center justify-between p-3 rounded-lg #{rhythm_bg(rhythm.status)}"}
-                >
-                  <div class="flex items-center gap-3">
-                    <span class={"px-2 py-1 rounded text-xs font-medium #{type_badge_class(rhythm.meal_type)}"}>
-                      {Rhythm.rhythm_display(rhythm.meal_type)}
-                    </span>
-                    <p class="text-white font-medium">{rhythm.name}</p>
-                  </div>
+                <%= for rhythm <- Enum.sort_by(rhythms, &Rhythm.rhythm_order(&1.meal_type)) do %>
+                  <% has_notes = rhythm.notes && rhythm.notes != "" %>
 
-                  <div class="flex items-center gap-2">
-                    <span class={"px-2 py-1 rounded text-xs font-medium #{status_badge(rhythm.status)}"}>
-                      {rhythm.status |> String.capitalize()}
-                    </span>
+                  <div class={"p-3 rounded-lg #{rhythm_bg(rhythm.status)}"}>
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-3">
+                        <span class={"px-2 py-1 rounded text-xs font-medium #{type_badge_class(rhythm.meal_type)}"}>
+                          {Rhythm.rhythm_display(rhythm.meal_type)}
+                        </span>
+                        <p class="text-white font-medium">{rhythm.name}</p>
+                      </div>
 
-                    <button
-                      :if={rhythm.status != "completed"}
-                      phx-click="mark_completed"
-                      phx-target={@myself}
-                      phx-value-id={rhythm.id}
-                      class="p-1.5 text-emerald-400 hover:bg-emerald-500/20 rounded transition-colors"
-                      title="Mark completed"
-                    >
-                      <.icon name="hero-check" class="w-4 h-4" />
-                    </button>
-                    <button
-                      :if={rhythm.status != "skipped"}
-                      phx-click="mark_skipped"
-                      phx-target={@myself}
-                      phx-value-id={rhythm.id}
-                      class="p-1.5 text-red-400 hover:bg-red-500/20 rounded transition-colors"
-                      title="Mark skipped"
-                    >
-                      <.icon name="hero-x-mark" class="w-4 h-4" />
-                    </button>
-                    <button
-                      :if={rhythm.status != "pending"}
-                      phx-click="reset_status"
-                      phx-target={@myself}
-                      phx-value-id={rhythm.id}
-                      class="p-1.5 text-yellow-400 hover:bg-yellow-500/20 rounded transition-colors"
-                      title="Reset"
-                    >
-                      <.icon name="hero-arrow-path" class="w-4 h-4" />
-                    </button>
-                    <button
-                      phx-click="delete_rhythm"
-                      phx-target={@myself}
-                      phx-value-id={rhythm.id}
-                      data-confirm="Delete this rhythm?"
-                      class="p-1.5 text-red-400 hover:bg-red-500/20 rounded transition-colors"
-                      title="Delete"
-                    >
-                      <.icon name="hero-trash" class="w-4 h-4" />
-                    </button>
+                      <div class="flex items-center gap-2">
+                        <span class={"px-2 py-1 rounded text-xs font-medium #{status_badge(rhythm.status)}"}>
+                          {rhythm.status |> String.capitalize()}
+                        </span>
+
+                        <button
+                          phx-click="delete_rhythm"
+                          phx-target={@myself}
+                          phx-value-id={rhythm.id}
+                          data-confirm="Delete this rhythm?"
+                          class="p-1.5 text-red-400 hover:bg-red-500/20 rounded transition-colors"
+                          title="Delete"
+                        >
+                          <.icon name="hero-trash" class="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <%= if has_notes do %>
+                      <div class="mt-2 pt-2 border-t border-purple-500/20">
+                        <p class="text-xs text-purple-400 mb-1">Notes:</p>
+                        <div class="text-sm text-purple-200 whitespace-pre-wrap">{rhythm.notes}</div>
+                      </div>
+                    <% end %>
                   </div>
-                </div>
+                <% end %>
               </div>
             </div>
           <% end %>

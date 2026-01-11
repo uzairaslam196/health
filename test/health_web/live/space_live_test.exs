@@ -80,7 +80,7 @@ defmodule HealthWeb.SpaceLiveTest do
 
     test "can navigate to orbits tab", %{view: view} do
       view
-      |> element("nav a[href='/space?tab=plans']")
+      |> element("nav.border-b a[href='/space?tab=plans']")
       |> render_click()
 
       assert has_element?(view, "h2", "Your Orbits")
@@ -88,7 +88,7 @@ defmodule HealthWeb.SpaceLiveTest do
 
     test "can navigate to routine tab", %{view: view} do
       view
-      |> element("nav a[href='/space?tab=meals']")
+      |> element("nav.border-b a[href='/space?tab=meals']")
       |> render_click()
 
       assert has_element?(view, "h2", "Daily Routine")
@@ -96,7 +96,7 @@ defmodule HealthWeb.SpaceLiveTest do
 
     test "can navigate to messages tab", %{view: view} do
       view
-      |> element("nav a[href='/space?tab=messages']")
+      |> element("nav.border-b a[href='/space?tab=messages']")
       |> render_click()
 
       assert has_element?(view, "h2", "Messages")

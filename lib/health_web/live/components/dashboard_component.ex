@@ -47,47 +47,47 @@ defmodule HealthWeb.DashboardComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="space-y-8">
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">
+    <div class="space-y-6 sm:space-y-8">
+      <div class="text-center mb-4 sm:mb-8">
+        <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">
           Welcome, {role_greeting(@role)}
         </h1>
-        <p class="text-purple-200">
+        <p class="text-purple-200 text-sm sm:text-base">
           {Date.utc_today() |> Calendar.strftime("%A, %B %d, %Y")}
         </p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
         <.stat_card label="Today's Rhythms" value={@stats.total} icon="hero-sparkles" color="purple" />
         <.stat_card label="Completed" value={@stats.completed} icon="hero-check-circle" color="green" />
         <.stat_card label="Skipped" value={@stats.skipped} icon="hero-x-circle" color="red" />
         <.stat_card label="Pending" value={@stats.pending} icon="hero-clock" color="yellow" />
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="cosmic-card p-6 rounded-2xl">
-          <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+      <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
+        <div class="cosmic-card p-4 sm:p-6 rounded-2xl">
+          <h3 class="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 flex items-center gap-2">
             <.icon name="hero-calendar-days" class="w-5 h-5 text-purple-400" />
             Today's Schedule
           </h3>
 
-          <div :if={@today_rhythms == []} class="text-purple-300 text-center py-8">
-            <.icon name="hero-calendar" class="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>No rhythms scheduled for today</p>
+          <div :if={@today_rhythms == []} class="text-purple-300 text-center py-6 sm:py-8">
+            <.icon name="hero-calendar" class="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 opacity-50" />
+            <p class="text-sm sm:text-base">No rhythms scheduled for today</p>
           </div>
 
-          <div :if={@today_rhythms != []} class="space-y-3">
+          <div :if={@today_rhythms != []} class="space-y-2 sm:space-y-3">
             <div
-              :for={rhythm <- @today_rhythms}
-              class={"flex items-center justify-between p-3 rounded-lg #{rhythm_status_bg(rhythm.status)}"}
+              :for={rhythm <- Enum.sort_by(@today_rhythms, &Rhythm.rhythm_order(&1.meal_type))}
+              class={"flex items-center justify-between p-2 sm:p-3 rounded-lg #{rhythm_status_bg(rhythm.status)}"}
             >
-              <div class="flex items-center gap-3">
-                <span class={"px-2 py-1 rounded text-xs font-medium #{type_badge_class(rhythm.meal_type)}"}>
+              <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <span class={"px-2 py-0.5 sm:py-1 rounded text-xs font-medium shrink-0 #{type_badge_class(rhythm.meal_type)}"}>
                   {Rhythm.rhythm_display(rhythm.meal_type)}
                 </span>
-                <p class="text-white font-medium">{rhythm.name}</p>
+                <p class="text-white font-medium text-sm sm:text-base truncate">{rhythm.name}</p>
               </div>
-              <span class={"px-2 py-1 rounded text-xs font-medium #{rhythm_status_badge(rhythm.status)}"}>
+              <span class={"px-2 py-0.5 sm:py-1 rounded text-xs font-medium shrink-0 ml-2 #{rhythm_status_badge(rhythm.status)}"}>
                 {rhythm.status |> String.capitalize()}
               </span>
             </div>
@@ -172,12 +172,12 @@ defmodule HealthWeb.DashboardComponent do
     assigns = assign(assigns, :color_class, Map.get(color_classes, assigns.color, ""))
 
     ~H"""
-    <div class={"cosmic-card p-4 rounded-xl bg-gradient-to-br #{@color_class} border"}>
-      <div class="flex items-center gap-3">
-        <.icon name={@icon} class="w-8 h-8 text-purple-300" />
-        <div>
-          <p class="text-2xl font-bold text-white">{@value}</p>
-          <p class="text-purple-300 text-xs">{@label}</p>
+    <div class={"cosmic-card p-3 sm:p-4 rounded-xl bg-gradient-to-br #{@color_class} border"}>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <.icon name={@icon} class="w-6 h-6 sm:w-8 sm:h-8 text-purple-300 shrink-0" />
+        <div class="min-w-0">
+          <p class="text-xl sm:text-2xl font-bold text-white">{@value}</p>
+          <p class="text-purple-300 text-xs truncate">{@label}</p>
         </div>
       </div>
     </div>
