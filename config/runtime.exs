@@ -34,7 +34,6 @@ if config_env() == :prod do
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
   config :health, Health.Repo,
-    ssl: true,
     url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "2"),
     socket_options: maybe_ipv6
@@ -51,8 +50,8 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  app_name = System.get_env("APP_NAME")
-  host = System.get_env("PHX_HOST") || (app_name && "#{app_name}.gigalixirapp.com") || "example.com"
+  app_name = System.get_env("FLY_APP_NAME")
+  host = System.get_env("PHX_HOST") || (app_name && "#{app_name}.fly.dev") || "example.com"
 
   config :health, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
