@@ -262,3 +262,843 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ====================================
+   CHAPPAL CHASE CARNAGE - GAME STYLES
+   ==================================== */
+
+/* Hip arena - game container - INCREASED FOR BIGGER BUTT */
+.hip-arena {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 450px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #2d1b4e 0%, #1a0a2e 50%, #0d0015 100%);
+  cursor: crosshair;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+/* Full character container - BIG AND ANIMATED */
+.butt-character {
+  position: absolute;
+  width: 340px;
+  height: 400px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 0.05s linear, top 0.05s linear;
+  animation: butt-jiggle 0.8s ease-in-out infinite;
+}
+
+/* Continuous jiggle animation for the butt */
+@keyframes butt-jiggle {
+  0%, 100% {
+    transform: translate(-50%, -50%) scaleX(1) scaleY(1);
+  }
+  25% {
+    transform: translate(-50%, -50%) scaleX(1.03) scaleY(0.97);
+  }
+  50% {
+    transform: translate(-50%, -50%) scaleX(0.97) scaleY(1.03);
+  }
+  75% {
+    transform: translate(-50%, -50%) scaleX(1.02) scaleY(0.98);
+  }
+}
+
+/* Arms reaching out (on sides) - SCALED UP */
+.arm {
+  position: absolute;
+  top: 25px;
+  width: 100px;
+  height: 32px;
+  background: linear-gradient(to bottom, #f5d0a9, #e8b888);
+  border-radius: 16px;
+  border: 4px solid #2a1a0a;
+  animation: arm-wave 1.2s ease-in-out infinite;
+}
+.arm.left {
+  left: -75px;
+  transform: rotate(-15deg);
+  animation-delay: 0s;
+}
+.arm.right {
+  right: -75px;
+  transform: rotate(15deg);
+  animation-delay: 0.6s;
+}
+
+/* Arm waving animation */
+@keyframes arm-wave {
+  0%, 100% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(-25deg);
+  }
+}
+
+.arm.right {
+  animation-name: arm-wave-right;
+}
+
+@keyframes arm-wave-right {
+  0%, 100% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(25deg);
+  }
+}
+
+/* Hands at end of arms - SCALED UP */
+.hand {
+  position: absolute;
+  width: 42px;
+  height: 36px;
+  background: #f5d0a9;
+  border-radius: 50%;
+  border: 4px solid #2a1a0a;
+}
+.arm.left .hand {
+  left: -25px;
+  top: -6px;
+}
+.arm.right .hand {
+  right: -25px;
+  top: -6px;
+}
+
+/* THE BIG BUTT - REALISTIC cheeks with bounce animation */
+.butt {
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 240px;
+}
+
+.butt-cheek {
+  position: absolute;
+  width: 170px;
+  height: 195px;
+  background:
+    /* Top highlight - shiny realistic skin */
+    radial-gradient(ellipse 50% 35% at 35% 25%, rgba(255,240,220,0.8) 0%, transparent 50%),
+    radial-gradient(ellipse 35% 30% at 60% 30%, rgba(255,230,210,0.6) 0%, transparent 45%),
+    /* Shadow areas for depth */
+    radial-gradient(ellipse 40% 45% at 70% 75%, rgba(150,100,70,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 40% at 25% 70%, rgba(160,110,80,0.3) 0%, transparent 50%),
+    /* Main skin gradient - more realistic tones */
+    linear-gradient(155deg,
+      #f8dcc8 0%,
+      #f0c8b0 15%,
+      #e8b898 30%,
+      #dca888 45%,
+      #d09878 60%,
+      #c48868 75%,
+      #b87858 90%,
+      #ac6848 100%
+    );
+  border-radius: 48% 52% 55% 45% / 50% 45% 55% 50%;
+  border: 4px solid #8b5a3c;
+  box-shadow:
+    /* Deep inner shadows for muscle definition */
+    inset -30px -30px 60px rgba(120,75,50,0.45),
+    inset 20px 20px 40px rgba(255,230,210,0.4),
+    inset -15px 15px 35px rgba(140,90,65,0.25),
+    /* Outer shadows for 3D effect */
+    0 18px 45px rgba(0,0,0,0.45),
+    0 8px 20px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.2);
+  animation: cheek-bounce 0.8s ease-in-out infinite;
+  /* Add realistic texture */
+  filter: contrast(1.08) saturate(1.05);
+}
+
+.butt-cheek.left {
+  left: 5px;
+  border-radius: 55% 45% 52% 48% / 50% 48% 52% 50%;
+  animation-delay: 0s;
+  /* Left cheek specific lighting */
+  background:
+    radial-gradient(ellipse 50% 35% at 40% 25%, rgba(255,240,220,0.85) 0%, transparent 50%),
+    radial-gradient(ellipse 35% 30% at 65% 30%, rgba(255,230,210,0.65) 0%, transparent 45%),
+    radial-gradient(ellipse 40% 45% at 75% 75%, rgba(150,100,70,0.4) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 40% at 20% 70%, rgba(160,110,80,0.35) 0%, transparent 50%),
+    linear-gradient(155deg,
+      #f8dcc8 0%,
+      #f0c8b0 15%,
+      #e8b898 30%,
+      #dca888 45%,
+      #d09878 60%,
+      #c48868 75%,
+      #b87858 90%,
+      #ac6848 100%
+    );
+}
+
+.butt-cheek.right {
+  right: 5px;
+  border-radius: 45% 55% 48% 52% / 48% 50% 50% 52%;
+  animation-delay: 0.1s;
+  /* Right cheek specific lighting */
+  background:
+    radial-gradient(ellipse 50% 35% at 30% 25%, rgba(255,240,220,0.8) 0%, transparent 50%),
+    radial-gradient(ellipse 35% 30% at 55% 30%, rgba(255,230,210,0.6) 0%, transparent 45%),
+    radial-gradient(ellipse 40% 45% at 65% 75%, rgba(150,100,70,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 40% at 30% 70%, rgba(160,110,80,0.3) 0%, transparent 50%),
+    linear-gradient(155deg,
+      #f8dcc8 0%,
+      #f0c8b0 15%,
+      #e8b898 30%,
+      #dca888 45%,
+      #d09878 60%,
+      #c48868 75%,
+      #b87858 90%,
+      #ac6848 100%
+    );
+}
+
+/* Skin texture overlay */
+.butt-cheek::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 25% 35%, rgba(255,200,180,0.4) 0%, transparent 25%),
+    radial-gradient(circle at 60% 70%, rgba(160,100,70,0.2) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+/* Individual cheek bounce animation */
+@keyframes cheek-bounce {
+  0%, 100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  30% {
+    transform: scaleY(0.97) scaleX(1.03);
+  }
+  60% {
+    transform: scaleY(1.02) scaleX(0.98);
+  }
+}
+
+/* Small skin details/pores on cheeks */
+.butt-cheek::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 6px;
+  height: 6px;
+  background: rgba(180,130,100,0.4);
+  border-radius: 50%;
+  box-shadow:
+    15px 10px 0 rgba(180,130,100,0.3),
+    8px 28px 0 rgba(180,130,100,0.35),
+    28px 20px 0 rgba(180,130,100,0.25),
+    20px 40px 0 rgba(180,130,100,0.3),
+    35px 12px 0 rgba(180,130,100,0.2),
+    12px 50px 0 rgba(180,130,100,0.25);
+}
+
+/* Butt crack - vertical line between cheeks */
+.butt-crack {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 75%;
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(100,60,40,0.4) 20%,
+    rgba(60,30,15,0.8) 45%,
+    rgba(40,20,10,1) 50%,
+    rgba(60,30,15,0.8) 55%,
+    rgba(100,60,40,0.4) 80%,
+    transparent 100%
+  );
+  border-radius: 50% 50% 40% 40% / 20% 20% 60% 60%;
+  z-index: 3;
+}
+
+/* Butt hole - ultra realistic sphincter with detailed wrinkles and texture */
+.butt-hole {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  width: 55px;
+  height: 65px;
+  background:
+    /* Outer ring - darker, more realistic skin tone with subtle highlights */
+    radial-gradient(circle at 35% 40%, rgba(120,80,60,0.3) 0%, transparent 40%),
+    radial-gradient(circle at 65% 35%, rgba(90,60,40,0.25) 0%, transparent 35%),
+    radial-gradient(ellipse 100% 100% at 50% 50%,
+      #3d2418 0%,
+      #50312a 25%,
+      #6b4538 50%,
+      #8b5a48 70%,
+      #a8705c 85%,
+      #b88568 100%
+    );
+  border-radius: 47% 53% 49% 51% / 41% 43% 57% 59%;
+  border: none;
+  z-index: 5;
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.98),
+    inset 0 0 20px rgba(0,0,0,0.9),
+    inset 0 3px 10px rgba(0,0,0,0.95),
+    inset -2px -2px 8px rgba(80,50,35,0.4),
+    0 0 12px rgba(50,25,15,0.6),
+    0 2px 6px rgba(0,0,0,0.5);
+  /* Add realistic texture and contrast */
+  filter: contrast(1.15) saturate(0.95);
+}
+
+/* Sphincter wrinkles - detailed radial folds with realistic texture */
+.butt-hole::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 52px;
+  background:
+    /* Enhanced wrinkle pattern with more detail */
+    conic-gradient(from 0deg at 50% 50%,
+      #140a05 0deg,
+      #2a1810 6deg,
+      #140a05 12deg,
+      #2a1810 18deg,
+      #140a05 24deg,
+      #2a1810 30deg,
+      #140a05 36deg,
+      #2a1810 42deg,
+      #140a05 48deg,
+      #2a1810 54deg,
+      #140a05 60deg,
+      #2a1810 66deg,
+      #140a05 72deg,
+      #2a1810 78deg,
+      #140a05 84deg,
+      #2a1810 90deg,
+      #140a05 96deg,
+      #2a1810 102deg,
+      #140a05 108deg,
+      #2a1810 114deg,
+      #140a05 120deg,
+      #2a1810 126deg,
+      #140a05 132deg,
+      #2a1810 138deg,
+      #140a05 144deg,
+      #2a1810 150deg,
+      #140a05 156deg,
+      #2a1810 162deg,
+      #140a05 168deg,
+      #2a1810 174deg,
+      #140a05 180deg,
+      #2a1810 186deg,
+      #140a05 192deg,
+      #2a1810 198deg,
+      #140a05 204deg,
+      #2a1810 210deg,
+      #140a05 216deg,
+      #2a1810 222deg,
+      #140a05 228deg,
+      #2a1810 234deg,
+      #140a05 240deg,
+      #2a1810 246deg,
+      #140a05 252deg,
+      #2a1810 258deg,
+      #140a05 264deg,
+      #2a1810 270deg,
+      #140a05 276deg,
+      #2a1810 282deg,
+      #140a05 288deg,
+      #2a1810 294deg,
+      #140a05 300deg,
+      #2a1810 306deg,
+      #140a05 312deg,
+      #2a1810 318deg,
+      #140a05 324deg,
+      #2a1810 330deg,
+      #140a05 336deg,
+      #2a1810 342deg,
+      #140a05 348deg,
+      #2a1810 354deg,
+      #140a05 360deg
+    ),
+    /* Secondary wrinkle layer for more depth */
+    conic-gradient(from 3deg at 50% 50%,
+      rgba(10,5,3,0.8) 0deg,
+      rgba(35,20,12,0.6) 9deg,
+      rgba(10,5,3,0.8) 18deg,
+      rgba(35,20,12,0.6) 27deg,
+      rgba(10,5,3,0.8) 36deg,
+      rgba(35,20,12,0.6) 45deg,
+      rgba(10,5,3,0.8) 54deg,
+      rgba(35,20,12,0.6) 63deg,
+      rgba(10,5,3,0.8) 72deg,
+      rgba(35,20,12,0.6) 81deg,
+      rgba(10,5,3,0.8) 90deg,
+      rgba(35,20,12,0.6) 99deg,
+      rgba(10,5,3,0.8) 108deg,
+      rgba(35,20,12,0.6) 117deg,
+      rgba(10,5,3,0.8) 126deg,
+      rgba(35,20,12,0.6) 135deg,
+      rgba(10,5,3,0.8) 144deg,
+      rgba(35,20,12,0.6) 153deg,
+      rgba(10,5,3,0.8) 162deg,
+      rgba(35,20,12,0.6) 171deg,
+      rgba(10,5,3,0.8) 180deg,
+      rgba(35,20,12,0.6) 189deg,
+      rgba(10,5,3,0.8) 198deg,
+      rgba(35,20,12,0.6) 207deg,
+      rgba(10,5,3,0.8) 216deg,
+      rgba(35,20,12,0.6) 225deg,
+      rgba(10,5,3,0.8) 234deg,
+      rgba(35,20,12,0.6) 243deg,
+      rgba(10,5,3,0.8) 252deg,
+      rgba(35,20,12,0.6) 261deg,
+      rgba(10,5,3,0.8) 270deg,
+      rgba(35,20,12,0.6) 279deg,
+      rgba(10,5,3,0.8) 288deg,
+      rgba(35,20,12,0.6) 297deg,
+      rgba(10,5,3,0.8) 306deg,
+      rgba(35,20,12,0.6) 315deg,
+      rgba(10,5,3,0.8) 324deg,
+      rgba(35,20,12,0.6) 333deg,
+      rgba(10,5,3,0.8) 342deg,
+      rgba(35,20,12,0.6) 351deg,
+      rgba(10,5,3,0.8) 360deg
+    ),
+    /* Middle gradient for realistic depth transition */
+    radial-gradient(ellipse 90% 90% at 50% 50%,
+      #050301 0%,
+      #0f0805 20%,
+      #1a0f0a 40%,
+      #2d1c15 65%,
+      rgba(45,28,21,0.5) 85%,
+      transparent 100%
+    );
+  border-radius: 46% 54% 49% 51% / 43% 45% 55% 57%;
+  box-shadow:
+    inset 0 0 18px rgba(0,0,0,0.98),
+    inset 0 0 10px rgba(0,0,0,0.9),
+    inset 0 2px 6px rgba(0,0,0,0.85);
+}
+
+/* Inner depth/darkness - the actual sphincter opening */
+.butt-hole::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 32px;
+  background:
+    /* Ultra-dark realistic center opening */
+    radial-gradient(ellipse at 48% 45%,
+      #000000 0%,
+      #000000 15%,
+      #030201 30%,
+      #080503 45%,
+      #120a06 65%,
+      rgba(25,15,10,0.8) 85%,
+      transparent 100%
+    );
+  border-radius: 45% 55% 47% 53% / 41% 43% 57% 59%;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,1),
+    inset 0 0 12px rgba(0,0,0,1),
+    inset 0 2px 8px rgba(0,0,0,1),
+    inset 0 -1px 4px rgba(0,0,0,0.95);
+  /* Make the opening irregular/organic */
+  clip-path: ellipse(48% 49% at 50% 50%);
+}
+
+/* Victim's face container - SCALED UP and positioned higher */
+.victim-face-container {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%);
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  border: 4px solid #2a1a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  overflow: hidden;
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.2),
+    inset 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.victim-face-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Pants pulled down around legs - SCALED UP */
+.pants {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 70px;
+  background: linear-gradient(to bottom, #4a7ab8 0%, #3a5a88 50%, #2a4a78 100%);
+  border-radius: 10px 10px 25px 25px;
+  border: 4px solid #2a1a0a;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Legs - SCALED UP */
+.legs {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+.leg {
+  position: relative;
+  width: 65px;
+  height: 55px;
+  background: linear-gradient(to bottom, #f5d0a9, #e8b888);
+  border-radius: 10px;
+  border: 4px solid #2a1a0a;
+}
+
+/* Shoes - SCALED UP */
+.shoe {
+  position: absolute;
+  bottom: -16px;
+  width: 72px;
+  height: 32px;
+  background: linear-gradient(to bottom, #dd4444, #cc3333, #aa2222);
+  border-radius: 10px 28px 10px 10px;
+  border: 4px solid #2a1a0a;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+.leg:first-child .shoe {
+  left: -8px;
+}
+.leg:last-child .shoe {
+  right: -8px;
+}
+
+/* === BLOOD EFFECTS - SPURTING FROM BUTT HOLE - SCALED UP === */
+.blood-container {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 180px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Blood spurting from center hole - BIGGER SPURTS */
+.blood-spurt {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 10px;
+  background: linear-gradient(to bottom, #8b0000, #cc0000, #ff2222, #cc0000, #8b0000);
+  border-radius: 5px;
+  transform-origin: top center;
+  animation: spurt 0.5s ease-out forwards;
+}
+
+@keyframes spurt {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  30% {
+    height: 80px;
+    opacity: 1;
+  }
+  100% {
+    height: 110px;
+    opacity: 0.7;
+    transform: translateX(-50%) translateY(25px);
+  }
+}
+
+/* Blood dripping down - BIGGER DRIPS */
+.blood-drip {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 24px;
+  background: radial-gradient(ellipse, #ff3333 0%, #cc0000 50%, #8b0000 100%);
+  border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+  animation: drip 1.2s ease-in forwards;
+}
+
+@keyframes drip {
+  0% {
+    top: 12px;
+    opacity: 1;
+  }
+  100% {
+    top: 160px;
+    opacity: 0;
+  }
+}
+
+/* Blood pool forming below - BIGGER */
+.blood-pool {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 12px;
+  background: radial-gradient(ellipse, #aa0000 0%, #8b0000 50%, #5c0000 100%);
+  border-radius: 50%;
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+}
+
+/* Progressive damage - cheeks get redder */
+.butt[data-damage="1"] .butt-cheek {
+  filter: brightness(0.95);
+}
+.butt[data-damage="2"] .butt-cheek {
+  filter: brightness(0.9) saturate(1.1);
+}
+.butt[data-damage="3"] .butt-cheek {
+  background: linear-gradient(145deg, #ffcca9 0%, #e8a080 40%, #d08060 100%);
+}
+.butt[data-damage="4"] .butt-cheek {
+  background: linear-gradient(145deg, #ffb090 0%, #e08060 40%, #c06040 100%);
+}
+.butt[data-damage="5"] .butt-cheek {
+  background: linear-gradient(145deg, #ff9070 0%, #d06040 40%, #a04030 100%);
+}
+
+/* Red handprint marks on cheeks - BIGGER */
+.handprint {
+  position: absolute;
+  width: 55px;
+  height: 70px;
+  background: rgba(200, 0, 0, 0.5);
+  border-radius: 40% 40% 50% 50%;
+  z-index: 6;
+  pointer-events: none;
+  animation: handprint-appear 0.3s ease-out;
+}
+
+@keyframes handprint-appear {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Hit flash effect */
+.butt.hit-flash {
+  animation: flash-red 0.2s ease-out;
+}
+
+@keyframes flash-red {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5) sepia(0.5) hue-rotate(-20deg) saturate(2);
+  }
+}
+
+/* Miss shake */
+.hip-arena.miss-shake {
+  animation: shake 0.3s ease-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+/* Weapon bar */
+.weapon-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 5, 30, 0.95);
+  border-top: 1px solid rgba(139, 92, 246, 0.3);
+  z-index: 50;
+}
+
+.weapon-item {
+  min-width: 55px;
+  min-height: 55px;
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(139, 92, 246, 0.2);
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.weapon-item:hover {
+  background: rgba(139, 92, 246, 0.3);
+}
+
+.weapon-item.selected {
+  border-color: #a855f7;
+  background: rgba(168, 85, 247, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+
+/* === CONTINUOUS GUN AIMING SYSTEM === */
+
+/* Crosshair - follows cursor/touch */
+.crosshair {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-weight: bold;
+  color: rgba(255, 50, 50, 0.6);
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s, text-shadow 0.1s;
+}
+
+.crosshair.active {
+  color: rgba(255, 0, 0, 0.9);
+  text-shadow:
+    0 0 20px rgba(255, 0, 0, 0.8),
+    0 0 40px rgba(255, 0, 0, 0.4);
+  animation: crosshair-pulse 0.3s ease-in-out infinite;
+}
+
+@keyframes crosshair-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Gun at bottom center */
+.gun {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 50px;
+  z-index: 90;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  transition: transform 0.05s ease-out;
+}
+
+/* Bullet projectile */
+.bullet {
+  position: absolute;
+  width: 8px;
+  height: 16px;
+  background: linear-gradient(to bottom, #ffff00, #ff8800, #ff4400);
+  border-radius: 50% 50% 20% 20%;
+  box-shadow:
+    0 0 10px #ff8800,
+    0 0 20px #ff4400,
+    0 0 5px #ffffff;
+  z-index: 80;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.bullet.hit {
+  animation: bullet-explode 0.1s ease-out forwards;
+}
+
+@keyframes bullet-explode {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+    background: #ff0000;
+  }
+}
+
+/* Muzzle flash effect */
+.muzzle-flash {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, #ffffff 0%, #ffff00 30%, #ff8800 60%, transparent 100%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: muzzle-flash 0.1s ease-out forwards;
+}
+
+@keyframes muzzle-flash {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}

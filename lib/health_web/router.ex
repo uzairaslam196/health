@@ -22,6 +22,9 @@ defmodule HealthWeb.Router do
 
     post "/space/login", SpaceAuthController, :login
     get "/space/logout", SpaceAuthController, :logout
+
+    # Chappal Chase Carnage - Roast Game
+    live "/roast/:room_id", RoastLive, :index
   end
 
   # Other scopes may use custom stacks.
