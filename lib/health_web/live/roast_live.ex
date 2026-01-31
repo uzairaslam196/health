@@ -335,18 +335,17 @@ defmodule HealthWeb.RoastLive do
   end
 
   defp generate_roast(victim, winner, room) do
-    victim_name = if victim, do: victim.username, else: "The Victim"
     winner_name = if winner, do: winner.username, else: "Someone"
     total_hits = room.hit_count
 
     templates = [
-      "#{victim_name}'s butt got DESTROYED! #{winner_name} landed the most hits. That butt will never be the same! 🍑💀",
-      "RIP #{victim_name}'s dignity! #{winner_name} showed no mercy with #{total_hits} total hits on that poor butt!",
-      "#{victim_name} won't be sitting down for a WEEK! #{winner_name} is the Chappal Champion! 🏆🩴",
-      "Blood everywhere! #{victim_name}'s butt looks like a crime scene! #{winner_name} is a certified MENACE!",
-      "#{winner_name} beat that butt like it owed them money! #{victim_name} should start running NOW! 🏃💨",
-      "That wasn't a game, that was an ASSASSINATION! #{victim_name} is officially roasted! 🔥🍑🔥",
-      "#{total_hits} hits?! #{victim_name}'s butt is now a historical landmark of destruction! All thanks to #{winner_name}!"
+      "Waqar's butt got DESTROYED! #{winner_name} landed the most hits. That butt will never be the same! 🍑💀",
+      "RIP Waqar's dignity! #{winner_name} showed no mercy with #{total_hits} total hits on that poor butt!",
+      "Waqar won't be sitting down for a WEEK! #{winner_name} is the Chappal Champion! 🏆🩴",
+      "Blood everywhere! Waqar's butt looks like a crime scene! #{winner_name} is a certified MENACE!",
+      "#{winner_name} beat that butt like it owed them money! Waqar should start running NOW! 🏃💨",
+      "That wasn't a game, that was an ASSASSINATION! Waqar is officially roasted! 🔥🍑🔥",
+      "#{total_hits} hits?! Waqar's butt is now a historical landmark of destruction! All thanks to #{winner_name}!"
     ]
 
     Enum.random(templates)
