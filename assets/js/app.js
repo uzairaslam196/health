@@ -31,6 +31,7 @@ const Hooks = {
     mounted() {
       this.roomId = this.el.dataset.roomId
       this.storageKey = this.roomId ? `roast_session:${this.roomId}` : 'roast_session'
+      this.passwordKey = this.roomId ? `roast_password:${this.roomId}` : 'roast_password'
       this.restoreFromStorage()
 
       this.handleEvent('persist_session', (data) => {
@@ -40,10 +41,27 @@ const Hooks = {
           username: data.username
         }))
       })
+
+      this.handleEvent('persist_password', (data) => {
+        if (!data || !data.password_verified) return
+        localStorage.setItem(this.passwordKey, JSON.stringify({
+          password_verified: true
+        }))
+      })
     },
 
     restoreFromStorage() {
       try {
+        // Restore password verification first
+        const passwordData = localStorage.getItem(this.passwordKey)
+        if (passwordData) {
+          const parsed = JSON.parse(passwordData)
+          if (parsed && parsed.password_verified) {
+            this.pushEvent('restore_password', parsed)
+          }
+        }
+
+        // Then restore session
         const stored = localStorage.getItem(this.storageKey)
         if (!stored) return
         const data = JSON.parse(stored)

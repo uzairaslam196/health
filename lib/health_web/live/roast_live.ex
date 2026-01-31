@@ -31,6 +31,8 @@ defmodule HealthWeb.RoastLive do
       |> assign(player_id: player_id)
       |> assign(username: nil)
       |> assign(username_input: "")
+      |> assign(password_verified: false)
+      |> assign(password_input: "")
       |> assign(room: room)
       |> assign(selected_weapon: "chappal")
       |> assign(last_hit_result: nil)
@@ -47,6 +49,27 @@ defmodule HealthWeb.RoastLive do
   @impl true
   def handle_event("update_username", %{"username" => username}, socket) do
     {:noreply, assign(socket, username_input: username)}
+  end
+
+  @impl true
+  def handle_event("update_password", %{"password" => password}, socket) do
+    {:noreply, assign(socket, password_input: password)}
+  end
+
+  @impl true
+  def handle_event("verify_password", %{"password" => password}, socket) do
+    password = String.trim(password)
+
+    if password == "12121212_1212" do
+      socket =
+        socket
+        |> assign(password_verified: true)
+        |> push_event("persist_password", %{password_verified: true})
+
+      {:noreply, socket}
+    else
+      {:noreply, put_flash(socket, :error, "Wrong password!")}
+    end
   end
 
   @impl true
@@ -76,6 +99,17 @@ defmodule HealthWeb.RoastLive do
         })
 
       {:noreply, socket}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_event("restore_password", params, socket) do
+    password_verified = params |> Map.get("password_verified", false)
+
+    if password_verified do
+      {:noreply, assign(socket, password_verified: true)}
     else
       {:noreply, socket}
     end
@@ -331,48 +365,80 @@ defmodule HealthWeb.RoastLive do
       <div class="twinkling"></div>
 
       <div class="relative z-10">
-        <!-- Header -->
-        <header class="cosmic-nav backdrop-blur-lg border-b border-purple-500/20 px-4 py-3">
-          <div class="max-w-4xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl">🩴</span>
-              <div>
-                <h1 class="text-white font-bold text-lg">Chappal Chase</h1>
-                <p class="text-purple-300 text-xs">Room: {@room_id}</p>
+        <%= if !@password_verified do %>
+          <!-- Password Screen -->
+          <div class="min-h-screen flex items-center justify-center px-4">
+            <div class="cosmic-card p-8 rounded-2xl max-w-md w-full">
+              <div class="text-center mb-6">
+                <span class="text-6xl mb-4 block">🔒</span>
+                <h2 class="text-2xl font-bold text-white mb-2">Enter Password</h2>
+                <p class="text-purple-300 text-sm">This room is password protected</p>
               </div>
-            </div>
-            <div class="flex items-center gap-2 text-purple-300">
-              <.icon name="hero-users" class="w-5 h-5" />
-              <span>{length(@room.participants)}</span>
+              <form phx-submit="verify_password" class="space-y-4">
+                <div>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter password..."
+                    autocomplete="off"
+                    phx-change="update_password"
+                    class="w-full px-4 py-3 bg-purple-900/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400 text-center"
+                    autofocus
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full cosmic-button py-3 rounded-lg font-semibold"
+                >
+                  Unlock Room 🔓
+                </button>
+              </form>
             </div>
           </div>
-        </header>
+        <% else %>
+          <!-- Header -->
+          <header class="cosmic-nav backdrop-blur-lg border-b border-purple-500/20 px-4 py-3">
+            <div class="max-w-4xl mx-auto flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">🩴</span>
+                <div>
+                  <h1 class="text-white font-bold text-lg">Chappal Chase</h1>
+                  <p class="text-purple-300 text-xs">Room: {@room_id}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-purple-300">
+                <.icon name="hero-users" class="w-5 h-5" />
+                <span>{length(@room.participants)}</span>
+              </div>
+            </div>
+          </header>
 
-        <main class="max-w-4xl mx-auto px-4 py-4">
-          <%= case @room.phase do %>
-            <% :lobby -> %>
-              <.lobby_view
-                room={@room}
-                username={@username}
-                username_input={@username_input}
-                player_id={@player_id}
-              />
-            <% :playing -> %>
-              <.game_view
-                room={@room}
-                username={@username}
-                selected_weapon={@selected_weapon}
-                weapons={@weapons}
-                last_hit_result={@last_hit_result}
-              />
-            <% :roast -> %>
-              <.roast_view
-                room={@room}
-                roast_text={@roast_text}
-                room_id={@room_id}
-              />
-          <% end %>
-        </main>
+          <main class="max-w-4xl mx-auto px-4 py-4">
+            <%= case @room.phase do %>
+              <% :lobby -> %>
+                <.lobby_view
+                  room={@room}
+                  username={@username}
+                  username_input={@username_input}
+                  player_id={@player_id}
+                />
+              <% :playing -> %>
+                <.game_view
+                  room={@room}
+                  username={@username}
+                  selected_weapon={@selected_weapon}
+                  weapons={@weapons}
+                  last_hit_result={@last_hit_result}
+                />
+              <% :roast -> %>
+                <.roast_view
+                  room={@room}
+                  roast_text={@roast_text}
+                  room_id={@room_id}
+                />
+            <% end %>
+          </main>
+        <% end %>
       </div>
     </div>
     """
